@@ -12,6 +12,19 @@
 | `Dockerfile`、`entrypoint.sh` | 多阶段构建、CANN 环境加载 | Ubuntu 22.04 和特定镜像源逻辑；依赖固定 wheel 标签 |
 | `docker-compose.yaml` | NPU 设备及驱动挂载的示例 | 镜像、容器名、设备节点、项目目录均固定 |
 
+### 参考文件路径
+
+当前机器上的原始目录：`/Users/fanghaolei/Workplace/Markdown/gpu_arch/ascend-dev/environment/`。开发仓内的副本目录：`/Users/fanghaolei/Workplace/agent/acend_env/reference/environment/`。其他 agent 可优先读取仓库副本；如需核对原始文件，可使用下列绝对路径。
+
+| 文件 | 当前机器上的原始绝对路径 | 开发仓内副本 |
+| --- | --- | --- |
+| 下载链接脚本 | `/Users/fanghaolei/Workplace/Markdown/gpu_arch/ascend-dev/environment/open-downloads-windows.ps1` | `reference/environment/open-downloads-windows.ps1` |
+| 上传脚本 | `/Users/fanghaolei/Workplace/Markdown/gpu_arch/ascend-dev/environment/upload-windows.ps1` | `reference/environment/upload-windows.ps1` |
+| 构建脚本 | `/Users/fanghaolei/Workplace/Markdown/gpu_arch/ascend-dev/environment/build-image.sh` | `reference/environment/build-image.sh` |
+| 镜像定义 | `/Users/fanghaolei/Workplace/Markdown/gpu_arch/ascend-dev/environment/Dockerfile` | `reference/environment/Dockerfile` |
+| 容器入口 | `/Users/fanghaolei/Workplace/Markdown/gpu_arch/ascend-dev/environment/entrypoint.sh` | `reference/environment/entrypoint.sh` |
+| Compose 配置 | `/Users/fanghaolei/Workplace/Markdown/gpu_arch/ascend-dev/environment/docker-compose.yaml` | `reference/environment/docker-compose.yaml` |
+
 现有脚本给出的是一个已知组合，不能据此推断任意 Toolkit 版本都有相同的下载路径、ops 包或匹配的 TorchNPU wheel。版本目录必须维护受支持组合并校验链接，未知组合应报告缺失而不是拼出未经验证的 URL。
 
 ## 2. 产品边界与方案
