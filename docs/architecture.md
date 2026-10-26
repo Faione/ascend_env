@@ -37,9 +37,12 @@ flowchart LR
 | `compose` 运行管理 | 按设备和驱动挂载配置生成 YAML，校验 Compose，启动/查询容器状态 | 镜像标签/运行配置 → Compose 文件 + 容器状态 | 提供 SSH 会话 |
 | `terminal` 终端桥接 | 将 WebSocket 与 `docker compose exec` 的 SSH PTY 双向连接，转发尺寸变化，清理断开的通道 | 运行中的容器/用户按键 → 终端字节流 | 提供任意目标主机 shell |
 | `workflow` 任务编排 | 顺序执行阶段、进度事件、取消、重试、失败恢复和并发约束 | 已验证配置/用户触发 → 状态变更 | 直接拼接命令或解析网页 |
-| `storage` 本地持久化 | 原子保存任务快照与阶段结果、追加日志、管理缓存及清理策略 | 状态/日志/产物 → 可恢复的本地记录 | 保存密码或私钥内容 |
+| `observability` 分级日志 | 统一级别与事件格式、上下文、脱敏、文件轮转、SSE 实时日志和构建输出管理 | 模块事件/命令输出 → 已脱敏日志、任务时间线 | 决定任务状态或保存终端按键 |
+| `storage` 本地持久化 | 原子保存任务快照与阶段结果、管理缓存及清理策略 | 状态/产物 → 可恢复的本地记录 | 保存密码或私钥内容、管理日志文件 |
 
 `workflow` 只能调用模块暴露的领域操作；`web` 只能通过 API 访问任务。远端命令从固定操作和服务端校验过的参数生成，所有参数经统一引用/转义处理；不提供“执行任意命令”的 HTTP 接口。
+
+`observability` 的级别、字段、输出通道和保留规则见[分级日志与可观测性设计](logging-design.md)。
 
 ## 3. 任务与数据流
 
@@ -105,7 +108,8 @@ src/
     image/         # Dockerfile、预检、构建
     compose/       # YAML、启动与状态
     terminal/      # 容器终端桥接
-    storage/       # 任务快照、日志、缓存
+    observability/ # 分级日志、脱敏、实时订阅
+    storage/       # 任务快照、缓存
   shared/          # schema、DTO、错误码
 catalog/           # 已核实的版本与来源数据
 templates/         # Dockerfile、entrypoint、Compose 模板

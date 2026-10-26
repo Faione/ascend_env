@@ -33,7 +33,7 @@
 
 主开发语言选用 **TypeScript**：浏览器端编译为静态 HTML/CSS/JavaScript 资源，本地辅助服务运行在 Node.js 上，共用任务状态和配置类型。Node.js 处理流式下载、归档、SSH/SFTP、WebSocket 与终端；浏览器终端使用 xterm.js。远端只执行生成的 Dockerfile、Compose YAML 与少量受控 Bash 命令，不安装应用服务。部署时页面只连接本机辅助服务，不直接接触 SSH 私钥。辅助服务仅监听 `127.0.0.1`，任务参数用结构化 API 传入，不拼接不受信任的 shell 命令。
 
-模块边界、任务状态、接口和目录约定见[软件架构与模块职责](architecture.md)。
+模块边界、任务状态、接口和目录约定见[软件架构与模块职责](architecture.md)；日志级别、脱敏和留存规则见[分级日志与可观测性设计](logging-design.md)。
 
 ### 核心流程
 
