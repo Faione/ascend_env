@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ascend 环境部署工具</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="xterm.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>Ascend 环境部署工具</h1>
+    <p class="subtitle">在目标 Linux 服务器上准备 CANN 安装包、构建镜像并启动容器</p>
+  </header>
+
+  <main class="layout">
+    <!-- 左侧：配置 -->
+    <section class="panel config">
+      <h2>1. 版本选择</h2>
+      <div class="grid">
+        <label>Toolkit 版本<select id="cann-version"></select></label>
+        <label>CPU 架构<select id="cpu-arch"><option value="x86_64">x86_64</option></select></label>
+        <label>Python 版本<select id="python-version"></select></label>
+        <label>算子型号<select id="soc-model"></select></label>
+      </div>
+      <p class="hint" id="resolve-hint">选择后将显示对应安装包与 wheel 来源。</p>
+
+      <h2>2. 目标服务器</h2>
+      <div class="grid">
+        <label>主机地址<input type="text" id="target-host" placeholder="例如 10.0.0.12"></label>
+        <label>SSH 端口<input type="number" id="target-port" value="22" min="1" max="65535"></label>
+        <label>用户名<input type="text" id="target-username" placeholder="例如 root" value="root"></label>
+        <label class="full">远端工作目录<input type="text" id="target-remote-root" placeholder="/data/ascend" value="/data/ascend"></label>
+      </div>
+
+      <h2>3. 镜像配置</h2>
+      <div class="grid">
+        <label>基础镜像<input type="text" id="image-base" value="ubuntu:22.04"></label>
+        <label>APT/PIP 镜像站<input type="text" id="image-mirror" value="http://mirrors.tools.huawei.com"></label>
+      </div>
+
+      <h2>4. 运行配置</h2>
+      <div class="grid">
+        <label class="full">设备节点（每行一个）<textarea id="runtime-devices" rows="3">/dev/davinci0
+/dev/davinci_manager
+/dev/hisi_hdc</textarea></label>
+        <label>驱动库路径<input type="text" id="runtime-driver" value="/usr/local/Ascend/driver/lib64"></label>
+        <label>DCMI 路径<input type="text" id="runtime-dcmi" value="/usr/local/dcmi"></label>
+        <label>驱动版本信息<input type="text" id="runtime-version" value="/usr/local/Ascend/driver/version.info"></label>
+        <label>安装信息<input type="text" id="runtime-install" value="/etc/ascend_install.info"></label>
+        <label>项目根目录（宿主机）<input type="text" id="runtime-project" value="/workspace/ascend-dev"></label>
+        <label>容器工作目录<input type="text" id="runtime-workdir" value="/workspace/ascend-dev/examples/add_pipeline"></label>
+      </div>
+
+      <h2>5. SSH 认证（运行时使用，不保存）</h2>
+      <div class="grid">
+        <label>认证方式<select id="auth-method">
+          <option value="agent">SSH Agent</option>
+          <option value="password">密码</option>
+          <option value="privateKey">私钥</option>
+        </select></label>
+      </div>
+      <div class="grid" id="auth-password-group" hidden>
+        <label class="full">密码<input type="password" id="auth-password"></label>
+      </div>
+      <div class="grid" id="auth-key-group" hidden>
+        <label class="full">私钥内容<textarea id="auth-private-key" rows="4" placeholder="-----BEGIN OPENSSH PRIVATE KEY-----"></textarea></label>
+        <label>私钥口令（可选）<input type="password" id="auth-passphrase"></label>
+      </div>
+      <div class="grid">
+        <label class="full">主机密钥指纹（可选，用于校验已保存指纹）<input type="text" id="auth-host-key" placeholder="SHA256:…（留空则首次自动记录）"></label>
+      </div>
+
+      <div class="actions">
+        <button id="btn-create" class="primary">创建任务</button>
+        <button id="btn-run" disabled>运行</button>
+        <button id="btn-retry" disabled>重试</button>
+        <button id="btn-cancel" disabled>取消</button>
+      </div>
+      <p class="status-line" id="form-status"></p>
+    </section>
+
+    <!-- 右侧：任务状态与输出 -->
+    <section class="panel output">
+      <div class="job-header">
+        <h2>任务进度</h2>
+        <span id="job-id" class="job-id">尚未创建任务</span>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-bar"><div id="progress-fill"></div></div>
+        <span id="progress-label" class="progress-label"></span>
+      </div>
+      <ul id="stages" class="stages"></ul>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="logs">日志</button>
+        <button class="tab" data-tab="generated">生成文件</button>
+        <button class="tab" data-tab="terminal">终端</button>
+      </div>
+
+      <div id="tab-logs" class="tab-pane active">
+        <pre id="log-output" class="log"></pre>
+      </div>
+      <div id="tab-generated" class="tab-pane">
+        <p class="hint" id="generated-hint">创建任务后可在运行前预览 Dockerfile / Compose 等生成文件。</p>
+        <div class="file-tabs" id="generated-tabs"></div>
+        <pre id="generated-content" class="gen-content"></pre>
+        <a id="bundle-link" class="bundle-link" hidden>下载 bundle.tar</a>
+      </div>
+      <div id="tab-terminal" class="tab-pane">
+        <p class="hint" id="terminal-hint">任务运行成功后，点击「打开终端」连接容器 shell。</p>
+        <button id="btn-terminal" disabled>打开终端</button>
+        <div id="terminal"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

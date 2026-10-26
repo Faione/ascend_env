@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "note": "受支持组合的受控目录。URL 均已核实，未知组合不得据此拼出未经验证链接。",
+  "combinations": [
+    {
+      "cannVersion": "9.1.0",
+      "cpuArch": "x86_64",
+      "pythonVersion": "3.10",
+      "torchVersion": "2.10.0",
+      "torchNpuVersion": "2.10.0.post4",
+      "toolkit": {
+        "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%209.1.0/Ascend-cann-toolkit_9.1.0_linux-x86_64.run",
+        "fileName": "Ascend-cann-toolkit_9.1.0_linux-x86_64.run"
+      },
+      "torch": {
+        "url": "https://download.pytorch.org/whl/cpu/torch-2.10.0%2Bcpu-cp310-cp310-manylinux_2_28_x86_64.whl",
+        "fileName": "torch-2.10.0+cpu-cp310-cp310-manylinux_2_28_x86_64.whl"
+      },
+      "torchNpu": {
+        "url": "https://gitcode.com/Ascend/pytorch/releases/download/v26.1.0-pytorch2.10.0/torch_npu-2.10.0.post4-cp310-cp310-manylinux_2_28_x86_64.whl",
+        "fileName": "torch_npu-2.10.0.post4-cp310-cp310-manylinux_2_28_x86_64.whl"
+      },
+      "ops": [
+        {
+          "socModel": "910",
+          "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%209.1.0/Ascend-cann-910-ops_9.1.0_linux-x86_64.run",
+          "fileName": "Ascend-cann-910-ops_9.1.0_linux-x86_64.run"
+        },
+        {
+          "socModel": "910b",
+          "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%209.1.0/Ascend-cann-910b-ops_9.1.0_linux-x86_64.run",
+          "fileName": "Ascend-cann-910b-ops_9.1.0_linux-x86_64.run"
+        },
+        {
+          "socModel": "950",
+          "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%209.1.0/Ascend-cann-950-ops_9.1.0_linux-x86_64.run",
+          "fileName": "Ascend-cann-950-ops_9.1.0_linux-x86_64.run"
+        }
+      ]
+    }
+  ]
+}

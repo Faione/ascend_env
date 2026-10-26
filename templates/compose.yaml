@@ -1,0 +1,33 @@
+# 参考模板：compose 模块按运行配置程序化渲染，本文件仅作人读参考。
+# 渲染时 imageTag/containerName/设备卷路径均从 RuntimeConfig 注入，避免手写缩进错误。
+services:
+  ascend-run:
+    image: ascend-dev:9.1.0-950-2.10.0
+    pull_policy: never
+    container_name: ascend-run
+    working_dir: /workspace/ascend-dev/examples/add_pipeline
+    command: ["sleep", "infinity"]
+    devices:
+      - /dev/davinci0:/dev/davinci0
+      - /dev/davinci_manager:/dev/davinci_manager
+      - /dev/hisi_hdc:/dev/hisi_hdc
+    volumes:
+      - type: bind
+        source: /usr/local/dcmi
+        target: /usr/local/dcmi
+        read_only: true
+      - type: bind
+        source: /usr/local/Ascend/driver/lib64
+        target: /usr/local/Ascend/driver/lib64
+        read_only: true
+      - type: bind
+        source: /usr/local/Ascend/driver/version.info
+        target: /usr/local/Ascend/driver/version.info
+        read_only: true
+      - type: bind
+        source: /etc/ascend_install.info
+        target: /etc/ascend_install.info
+        read_only: true
+      - type: bind
+        source: /workspace/ascend-dev
+        target: /workspace/ascend-dev

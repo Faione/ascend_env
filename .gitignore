@@ -7,4 +7,5 @@ downloads/
 archives/
 workspaces/
 *.log
+*.tgz
 .DS_Store
