@@ -20,6 +20,8 @@
 
 主开发语言选用 **TypeScript**：浏览器端编译为静态 HTML/CSS/JavaScript 资源，本地辅助服务运行在 Node.js 上，共用任务状态和配置类型。Node.js 处理流式下载、归档、SSH/SFTP、WebSocket 与终端；浏览器终端使用 xterm.js。远端只执行生成的 Dockerfile、Compose YAML 与少量受控 Bash 命令，不安装应用服务。部署时页面只连接本机辅助服务，不直接接触 SSH 私钥。辅助服务仅监听 `127.0.0.1`，任务参数用结构化 API 传入，不拼接不受信任的 shell 命令。
 
+模块边界、任务状态、接口和目录约定见[软件架构与模块职责](architecture.md)。
+
 ### 核心流程
 
 1. **选择版本**：输入 Toolkit 版本、NPU 算子型号（如 910B/950），同时明确目标服务器 CPU 架构。版本目录给出 Toolkit、对应 ops、Torch、TorchNPU 四个文件的官方来源、期望文件名及兼容关系；在界面中展示并检查可访问性。
@@ -64,8 +66,8 @@
 1. 首版应支持的 Toolkit 版本、NPU 型号，以及对应 Torch/TorchNPU 组合。参考资料目前只明确给出 9.1.0、910/910B/950 和 Torch 2.10.0 组合。
 2. 目标服务器的 CPU 架构、Linux 发行版、Docker/Compose 版本、NPU 设备和驱动挂载路径。
 3. 项目源码是已经存在于目标服务器，还是也要与安装包一起上传；现有 Compose 示例假定目标服务器已有 `PROJECT_ROOT`。
-4. 用户希望辅助服务运行在操作员电脑，还是目标服务器。上述计划默认在操作员电脑运行，并通过 SSH 访问目标服务器。
+4. 是否提供首版以外的离线导入、基础镜像显式拉取和多任务并发。这些能力可在主流程稳定后扩展。
 
 ## 6. 本次初始化结果
 
-当前目录已初始化为 Git 仓库，默认分支为 `main`，`origin` 指向 `https://github.com/Faione/ascend_env.git`。远端分支检查返回空结果，表示检查时未发现已有分支。本次只建立计划和参考基线，不开始功能实现。
+当前目录已初始化为 Git 仓库，默认分支为 `main`，`origin` 指向 `https://github.com/Faione/ascend_env.git`。需求与架构文档、参考基线已纳入仓库；功能实现尚未开始。
