@@ -4,9 +4,11 @@
 
 当前阶段已完成需求分析和仓库初始化，尚未实现部署功能。
 
+- [Agent 开发约束与必读顺序](AGENTS.md)
 - [开发计划](docs/development-plan.md)
 - [软件架构与模块职责](docs/architecture.md)
 - [分级日志与可观测性设计](docs/logging-design.md)
+- [CLI 说明要求](docs/cli.md)
 - [现有环境脚本](reference/environment/)
 
 `reference/environment/` 是从现有环境目录复制的参考基线，后续实现应保留原始版本用于对照，并在应用目录中维护可生成的 Dockerfile 和 Compose 模板。

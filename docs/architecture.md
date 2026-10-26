@@ -27,6 +27,7 @@ flowchart LR
 | 模块 | 主要职责 | 输入 → 输出 | 明确不负责 |
 | --- | --- | --- | --- |
 | `web` 页面 | 配置向导、文件链接与生成文件预览、任务进度、日志、终端界面 | 用户配置/API 事件 → 操作请求/展示 | 下载大文件、保存 SSH 凭据、执行系统命令 |
+| `cli` 本地入口 | 启动本地服务、展示帮助与版本、提供必要诊断入口 | 命令行参数 → 应用服务调用/退出码 | 复制下载、SSH、Docker 等业务规则 |
 | `api` 本地接口 | 静态文件、配置校验入口、HTTP API、SSE、终端 WebSocket、同源与会话校验 | HTTP/WS 请求 → 结构化响应/事件 | 具体下载、SSH 或 Docker 逻辑 |
 | `shared` 契约 | 配置 schema、版本与任务类型、错误码、输入规范化 | 原始输入 → 已验证的领域数据 | IO 和命令执行 |
 | `catalog` 版本目录 | 解析 Toolkit 版本、NPU 型号、CPU 架构及配套 Torch/TorchNPU；产出四个文件的可信 URL、名称、兼容性与校验信息 | 版本选择 → `ArtifactSet` | 猜测未知版本 URL、实际下载 |
@@ -98,6 +99,7 @@ flowchart LR
 ```text
 src/
   web/             # 静态页面、API 客户端、xterm.js 视图
+  cli/             # 本地启动、帮助、版本和诊断入口
   server/
     api/           # HTTP、SSE、WebSocket
     workflow/      # 阶段编排与任务状态
