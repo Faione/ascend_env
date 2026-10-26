@@ -18,7 +18,7 @@
 
 静态 HTML/JS 不能直接访问用户文件系统、持有 SSH 会话、运行 Docker 命令或提供容器 PTY。因此采用**静态前端 + 本地辅助服务**：前端可作为静态文件提供；辅助服务在用户机器运行，向本机回环地址提供受限 API。辅助服务使用 SSH/SFTP 操作目标 Linux 服务器，构建和启动 Docker 均在目标服务器执行。页面显示任务进度和日志，终端通过 WebSocket 桥接 SSH PTY 与浏览器终端组件。
 
-建议使用 Node.js 实现辅助服务与静态文件服务，统一处理流式下载、归档、SSH/SFTP、WebSocket 与终端。终端前端可用 xterm.js。部署时页面只连接本机辅助服务，不直接接触 SSH 私钥。辅助服务仅监听 `127.0.0.1`，任务参数用结构化 API 传入，不拼接不受信任的 shell 命令。
+主开发语言选用 **TypeScript**：浏览器端编译为静态 HTML/CSS/JavaScript 资源，本地辅助服务运行在 Node.js 上，共用任务状态和配置类型。Node.js 处理流式下载、归档、SSH/SFTP、WebSocket 与终端；浏览器终端使用 xterm.js。远端只执行生成的 Dockerfile、Compose YAML 与少量受控 Bash 命令，不安装应用服务。部署时页面只连接本机辅助服务，不直接接触 SSH 私钥。辅助服务仅监听 `127.0.0.1`，任务参数用结构化 API 传入，不拼接不受信任的 shell 命令。
 
 ### 核心流程
 
